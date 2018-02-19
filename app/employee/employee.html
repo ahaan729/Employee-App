@@ -1,0 +1,62 @@
+<div>
+    <h2>{{action}} Employee</h2>
+    <form name="employeeForm" novalidate>
+        <div class="form-group" ng-class="{ 'was-validated': employeeForm.firstName.$touched && employeeForm.firstName.$error.required && employeeForm.firstName.$error.pattern }">
+            <label for="firstName">First name</label>
+            <input type="text" name="firstName" id="firstName" class="form-control" ng-pattern="/^[A-z]+$/" ng-model="firstName" required>
+            <span ng-show="employeeForm.firstName.$touched && employeeForm.firstName.$error.required" class="alert-danger">First Name is required</span>
+            <span ng-show="employeeForm.firstName.$touched && employeeForm.firstName.$error.pattern" class="alert-danger">First Name should contain only Alphabets</span>
+        </div>
+        <div class="form-group" ng-class="{ 'was-validated': employeeForm.lastName.$touched && employeeForm.lastName.$error.required }">
+            <label for="lastName">Last name</label>
+            <input type="text" name="lastName" id="lastName" class="form-control" ng-pattern="/^[A-z]+$/" ng-model="lastName" required>
+            <span ng-show="employeeForm.lastName.$touched && employeeForm.lastName.$error.required" class="alert-danger">Last Name is required</span>
+            <span ng-show="employeeForm.lastName.$touched && employeeForm.lastName.$error.pattern" class="alert-danger">Last Name should contain only Alphabets</span>
+        </div>
+        <div class="form-group" ng-class="{ 'was-validated': employeeForm.designation.$touched && employeeForm.designation.$error.required }">
+            <label for="designation">Designation</label>
+            <select id="designation" name="designation" class="form-control" ng-model="designation" required>
+                <option value="">--Select--</option>
+                <option ng-repeat="des in designationList">{{des}}</option>
+            </select>
+            <span ng-show="employeeForm.designation.$touched && employeeForm.designation.$error.required" class="alert-danger">Designation is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'was-validated': employeeForm.age.$touched && employeeForm.age.$invalid }">
+            <label for="age">Age</label>
+            <input type="number" name="age" id="age" class="form-control" ng-model="age" min="19" max="59" required>
+            <span ng-show="employeeForm.age.$touched && employeeForm.age.$invalid" class="alert-danger">Age is required (Greater than 18 & Less than 60)</span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="employeeForm.$invalid" ng-show="action == 'Add'" ng-click="addEmp()" class="btn btn-primary">{{action}}</button>
+            <button type="submit" ng-disabled="employeeForm.$invalid" ng-show="action == 'Edit'" ng-click="editEmp()" class="btn btn-primary">{{action}}</button>
+            <button class="btn btn-link" ng-click="resetForm()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div ng-if="employeeDetails.length != 0">
+    <br><hr><br>
+    <h2>View Employee Details</h2>
+    <br>
+    <table  class="table-bordered">
+        <thead class="text-center">
+            <tr>
+                <th>Name</th>
+                <th>Designation Name</th>
+                <th>Age</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="emp in employeeDetails">
+                <td>{{emp.firstName}} {{emp.lastName}}</td>
+                <td>{{emp.designation}}</td>
+                <td>{{emp.age}}</td>
+                <td>
+                    <button class="btn btn-link"><i class="material-icons" ng-click="editView(emp, $index)">mode_edit</i></button>
+                    <button class="btn btn-link"><i class="material-icons" ng-click="removeEmp($index)">delete_forever</i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
